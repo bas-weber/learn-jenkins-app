@@ -1,13 +1,10 @@
 pipeline {
     agent any
-
     environment {
         REACT_APP_VERSION = "1.0.$BUILD_ID"
         AWS_DEFAULT_REGION = 'us-east-1'
     }
-
     stages {
-
         stage('Build') {
             agent {
                 docker {
@@ -24,8 +21,6 @@ pipeline {
                 '''
             }
         }
-
-
         stage('Build Docker Image') {
             agent {
                 docker {
@@ -36,13 +31,10 @@ pipeline {
             }
             steps {
                 sh '''
-                    docker build -t myjenkinsapp .
+                    docker build -t myjenkinsapp:$REACT_APP_VERSION .
                 '''
-
             }
         }
-
-
         stage('Deploy to AWS') {
             agent {
                 docker {

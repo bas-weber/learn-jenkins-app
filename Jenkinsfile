@@ -7,6 +7,29 @@ pipeline {
     }
 
     stages {
+        stage('Build') {
+            agent {
+                docker {
+                    image 'my-playwright'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    node --version
+                    npm --version
+                    npm ci
+                    npm run build
+                '''
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t myjenkinsapp .'
+            }
+        }
+
         stage('Deploy to AWS') {
             agent {
                 docker {
@@ -26,23 +49,6 @@ pipeline {
                         aws ecs wait services-stable --cluster LearnJenkinsAppProd --services LearnJenkinsApp-Service-Prod
                     '''
                 }
-            }
-        }
-
-        stage('Build') {
-            agent {
-                docker {
-                    image 'my-playwright'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    node --version
-                    npm --version
-                    npm ci
-                    npm run build
-                '''
             }
         }
     }

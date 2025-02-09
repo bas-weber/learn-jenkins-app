@@ -6,7 +6,7 @@
   "containerDefinitions": [
     {
       "name": "LeanJenkinsApp",
-      "image": "nginx:1.27-alpine",
+      "image": "455616434489.dkr.ecr.us-east-1.amazonaws.com/jenkinsapp:#APP_VERSION#",
       "portMappings": [{
         "name" : "nginx-80-tip",
         "containerPort" : 80,
@@ -22,5 +22,5 @@
   "networkMode": "awsvpc",
   "memory": "512",
   "cpu": "256",
-  "executionRoleArn": ""
+  "executionRoleArn": "arn:aws:iam::455616434489:role/ecsTaskExecutionRole"
 }
